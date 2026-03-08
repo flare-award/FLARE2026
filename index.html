@@ -1,0 +1,1980 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FLARE 2026 — Главная Премия Нодбин Жоски</title>
+    <link rel="icon" href="favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;600;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #06070d;
+            --bg2: #0b0d1a;
+            --gold: #e8c87a;
+            --gold2: #f5d98a;
+            --gold-dim: rgba(232,200,122,0.15);
+            --gold-glow: rgba(232,200,122,0.4);
+            --white: #f0eee8;
+            --gray: #6b6e7e;
+            --gray2: #9499aa;
+            --blue: #1a2050;
+            --blue2: #0f1535;
+            --accent: #c9a84c;
+            --red: #e05555;
+            --green: #55bb77;
+            --radius: 14px;
+            --radius2: 22px;
+        }
+
+        * { margin:0; padding:0; box-sizing:border-box; }
+
+        ::-webkit-scrollbar { width:6px; }
+        ::-webkit-scrollbar-track { background: var(--bg2); }
+        ::-webkit-scrollbar-thumb { background: var(--accent); border-radius:6px; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--bg);
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            cursor: default;
+        }
+
+        /* ─── PARTICLES ─── */
+        #particles {
+            position:fixed; inset:0;
+            pointer-events:none;
+            z-index:0;
+            overflow:hidden;
+        }
+        .particle {
+            position:absolute;
+            width:2px; height:2px;
+            background: var(--gold);
+            border-radius:50%;
+            animation: floatUp linear infinite;
+            opacity:0;
+        }
+        @keyframes floatUp {
+            0%   { transform: translateY(100vh) translateX(0); opacity:0; }
+            10%  { opacity:0.7; }
+            90%  { opacity:0.4; }
+            100% { transform: translateY(-10vh) translateX(30px); opacity:0; }
+        }
+
+        /* ─── SPLASH ─── */
+        #splash {
+            position:fixed; inset:0;
+            background: var(--bg);
+            z-index:1000;
+            display:flex; align-items:center; justify-content:center;
+            flex-direction:column;
+            animation: splashOut 0.8s ease 2.8s forwards;
+        }
+        .splash-ring {
+            width:120px; height:120px;
+            border:2px solid transparent;
+            border-top-color: var(--gold);
+            border-right-color: var(--gold);
+            border-radius:50%;
+            animation: spin 1.2s linear infinite;
+            margin-bottom:2rem;
+        }
+        .splash-title {
+            font-family:'Unbounded', sans-serif;
+            font-size:2.2rem; font-weight:900;
+            color:var(--gold);
+            letter-spacing:0.15em;
+            animation: fadeIn 0.6s ease 0.4s both;
+        }
+        .splash-sub {
+            font-size:0.85rem; color:var(--gray2);
+            letter-spacing:0.3em; margin-top:0.5rem;
+            animation: fadeIn 0.6s ease 0.8s both;
+        }
+        @keyframes splashOut {
+            to { opacity:0; visibility:hidden; pointer-events:none; }
+        }
+        @keyframes spin { to { transform:rotate(360deg); } }
+        @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+
+        /* ─── HEADER ─── */
+        header {
+            position:fixed; top:0; left:0; right:0;
+            z-index:500;
+            padding:0 clamp(1rem,4vw,3rem);
+            height:64px;
+            display:flex; align-items:center; justify-content:space-between;
+            background: rgba(6,7,13,0.85);
+            backdrop-filter: blur(20px);
+            border-bottom:1px solid rgba(232,200,122,0.08);
+            transition: border-color 0.3s;
+        }
+        header.scrolled { border-bottom-color: rgba(232,200,122,0.18); }
+        .header-logo {
+            font-family:'Unbounded', sans-serif;
+            font-size:1.1rem; font-weight:900;
+            color:var(--gold);
+            letter-spacing:0.1em;
+            opacity:0;
+            transition: opacity 0.3s;
+        }
+        header.scrolled .header-logo { opacity:1; }
+        .header-right { display:flex; align-items:center; gap:10px; }
+        .header-nav { display:flex; gap:4px; }
+        .nav-link {
+            color:var(--gray2); font-size:0.82rem;
+            padding:6px 12px; border-radius:8px;
+            cursor:pointer; transition:all 0.2s;
+            text-decoration:none; letter-spacing:0.03em;
+        }
+        .nav-link:hover { color:var(--white); background:rgba(255,255,255,0.05); }
+        .btn-header {
+            background: transparent;
+            border:1px solid rgba(232,200,122,0.35);
+            color:var(--gold); font-size:0.82rem;
+            padding:7px 18px; border-radius:8px;
+            cursor:pointer; font-family:'Inter',sans-serif;
+            transition:all 0.25s; white-space:nowrap;
+        }
+        .btn-header:hover {
+            background: var(--gold-dim);
+            border-color: var(--gold);
+            box-shadow: 0 0 14px var(--gold-glow);
+        }
+        .admin-wrap { position:relative; }
+        .admin-dropdown {
+            display:none; position:absolute;
+            top:calc(100% + 8px); right:0;
+            min-width:220px;
+            background:var(--bg2);
+            border:1px solid rgba(232,200,122,0.2);
+            border-radius:var(--radius); padding:8px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+        }
+        .admin-dropdown.open { display:block; }
+        .admin-item {
+            padding:10px 14px; border-radius:8px;
+            cursor:pointer; font-size:0.85rem; color:var(--gray2);
+            transition:all 0.2s; display:flex; justify-content:space-between;
+        }
+        .admin-item:hover { background:var(--gold-dim); color:var(--gold); }
+        .badge {
+            background:var(--gold); color:var(--bg);
+            border-radius:10px; padding:1px 7px;
+            font-size:0.75rem; font-weight:700;
+        }
+
+        /* ─── HERO ─── */
+        .hero {
+            min-height:100svh; display:flex;
+            align-items:center; justify-content:center;
+            flex-direction:column; text-align:center;
+            padding: 90px clamp(1rem,5vw,4rem) 4rem;
+            position:relative; z-index:1;
+        }
+        .hero-eyebrow {
+            font-size:0.78rem; letter-spacing:0.35em;
+            color:var(--gold); text-transform:uppercase;
+            margin-bottom:1.5rem;
+            animation: fadeIn 0.8s ease 3.4s both;
+        }
+        .hero-title {
+            font-family:'Unbounded', sans-serif;
+            font-size: clamp(4rem, 14vw, 11rem);
+            font-weight:900; line-height:0.9;
+            color:transparent;
+            background: linear-gradient(135deg, #e8c87a 0%, #f5d98a 40%, #c9a84c 70%, #e8c87a 100%);
+            -webkit-background-clip:text; background-clip:text;
+            filter: drop-shadow(0 0 60px rgba(232,200,122,0.3));
+            animation: heroReveal 1.2s cubic-bezier(0.16,1,0.3,1) 3.2s both;
+        }
+        @keyframes heroReveal {
+            from { opacity:0; transform:scale(0.88) translateY(30px); filter: drop-shadow(0 0 0 rgba(232,200,122,0)); }
+            to   { opacity:1; transform:scale(1) translateY(0); }
+        }
+        .hero-year {
+            font-family:'Unbounded',sans-serif;
+            font-size: clamp(1rem, 4vw, 2.5rem);
+            font-weight:300; color:var(--gray2);
+            letter-spacing:0.4em; margin-top:0.3rem;
+            animation: fadeIn 0.8s ease 3.6s both;
+        }
+        .hero-sub {
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            color:var(--gray2); margin-top:2.5rem; max-width:520px;
+            line-height:1.7; letter-spacing:0.01em;
+            animation: fadeIn 0.8s ease 3.8s both;
+        }
+        .hero-cta {
+            display:flex; gap:14px; flex-wrap:wrap;
+            justify-content:center; margin-top:3rem;
+            animation: fadeIn 0.8s ease 4s both;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold2) 100%);
+            color:var(--bg); font-family:'Inter',sans-serif;
+            font-size:0.9rem; font-weight:700;
+            padding:14px 32px; border-radius:100px; border:none;
+            cursor:pointer; letter-spacing:0.04em;
+            transition:all 0.3s; text-transform:uppercase;
+        }
+        .btn-primary:hover {
+            transform:translateY(-2px);
+            box-shadow: 0 12px 32px var(--gold-glow), 0 0 0 1px rgba(232,200,122,0.4);
+        }
+        .btn-secondary {
+            background:transparent;
+            color:var(--gold); font-family:'Inter',sans-serif;
+            font-size:0.9rem; font-weight:600;
+            padding:13px 32px; border-radius:100px;
+            border:1px solid rgba(232,200,122,0.35);
+            cursor:pointer; letter-spacing:0.04em;
+            transition:all 0.3s; text-transform:uppercase;
+        }
+        .btn-secondary:hover {
+            background: var(--gold-dim);
+            border-color: var(--gold);
+            box-shadow: 0 0 20px var(--gold-glow);
+        }
+        .hero-scroll-hint {
+            position:absolute; bottom:2.5rem;
+            display:flex; flex-direction:column; align-items:center; gap:8px;
+            color:var(--gray); font-size:0.75rem; letter-spacing:0.1em;
+            animation: fadeIn 1s ease 5s both;
+        }
+        .scroll-line {
+            width:1px; height:50px;
+            background: linear-gradient(to bottom, var(--gold), transparent);
+            animation: scrollPulse 2s ease infinite;
+        }
+        @keyframes scrollPulse {
+            0%,100%{ opacity:0.3; } 50%{ opacity:1; }
+        }
+
+        /* ─── GLOW ORBS ─── */
+        .orb {
+            position:absolute; border-radius:50%;
+            filter:blur(80px); pointer-events:none; z-index:0;
+        }
+        .orb-1 {
+            width:600px; height:600px;
+            background: radial-gradient(circle, rgba(232,200,122,0.12) 0%, transparent 70%);
+            top:-200px; left:50%; transform:translateX(-50%);
+            animation: orbFloat1 12s ease-in-out infinite;
+        }
+        .orb-2 {
+            width:400px; height:400px;
+            background: radial-gradient(circle, rgba(100,120,255,0.1) 0%, transparent 70%);
+            bottom:0; left:-100px;
+            animation: orbFloat2 15s ease-in-out infinite;
+        }
+        @keyframes orbFloat1 {
+            0%,100%{ transform:translateX(-50%) translateY(0); }
+            50%{ transform:translateX(-50%) translateY(-30px); }
+        }
+        @keyframes orbFloat2 {
+            0%,100%{ transform:translateY(0); }
+            50%{ transform:translateY(-40px); }
+        }
+
+        /* ─── SECTION STYLES ─── */
+        .section {
+            position:relative; z-index:1;
+            padding: clamp(4rem,8vw,7rem) clamp(1rem,5vw,4rem);
+            max-width:1280px; margin:0 auto;
+        }
+        .section-label {
+            font-size:0.72rem; letter-spacing:0.35em;
+            color:var(--gold); text-transform:uppercase;
+            margin-bottom:1rem; display:block;
+        }
+        .section-title {
+            font-family:'Unbounded',sans-serif;
+            font-size: clamp(1.8rem, 5vw, 3.5rem);
+            font-weight:800; line-height:1.1;
+            margin-bottom:0.5rem;
+        }
+        .section-desc {
+            color:var(--gray2); font-size:1rem; line-height:1.7;
+            max-width:540px; margin-top:0.8rem;
+        }
+
+        /* ─── DIVIDER ─── */
+        .divider {
+            height:1px; margin:0 clamp(1rem,5vw,4rem);
+            background: linear-gradient(90deg, transparent, rgba(232,200,122,0.15), transparent);
+        }
+
+        /* ─── ABOUT ─── */
+        .about-grid {
+            display:grid;
+            grid-template-columns: 1fr 1fr;
+            gap:4rem; align-items:center;
+            margin-top:3.5rem;
+        }
+        @media(max-width:768px){ .about-grid{ grid-template-columns:1fr; gap:2rem; } }
+        .about-text p {
+            color:var(--gray2); font-size:0.95rem; line-height:1.85;
+            margin-bottom:1.2rem;
+        }
+        .about-text strong { color:var(--gold); font-weight:600; }
+        .about-img-frame {
+            border-radius:var(--radius2);
+            overflow:hidden;
+            border:1px solid rgba(232,200,122,0.18);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(232,200,122,0.06);
+            position:relative;
+        }
+        .about-img-frame::before {
+            content:''; position:absolute; inset:0;
+            background: linear-gradient(135deg, rgba(232,200,122,0.08) 0%, transparent 50%);
+            z-index:1; pointer-events:none;
+        }
+        .about-img-frame img {
+            width:100%; display:block;
+            aspect-ratio:4/3; object-fit:cover;
+            transition: transform 0.6s ease;
+        }
+        .about-img-frame:hover img { transform:scale(1.03); }
+        .stats-row {
+            display:grid; grid-template-columns: repeat(3,1fr);
+            gap:1.5rem; margin-top:2.5rem;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, rgba(232,200,122,0.05) 0%, rgba(232,200,122,0.02) 100%);
+            border:1px solid rgba(232,200,122,0.12);
+            border-radius:var(--radius); padding:1.5rem;
+            text-align:center;
+            transition: border-color 0.3s, transform 0.3s;
+        }
+        .stat-card:hover { border-color:rgba(232,200,122,0.35); transform:translateY(-4px); }
+        .stat-num {
+            font-family:'Unbounded',sans-serif;
+            font-size:2.2rem; font-weight:900; color:var(--gold);
+            line-height:1;
+        }
+        .stat-label { font-size:0.78rem; color:var(--gray2); margin-top:0.4rem; letter-spacing:0.05em; }
+
+        /* ─── PREVIOUS RESULTS ─── */
+        .prev-section {
+            padding: clamp(4rem,8vw,7rem) clamp(1rem,5vw,4rem);
+            background: var(--bg2);
+            border-top:1px solid rgba(232,200,122,0.07);
+            border-bottom:1px solid rgba(232,200,122,0.07);
+        }
+        .prev-inner { max-width:1280px; margin:0 auto; }
+        .carousel-wrap {
+            position:relative; margin-top:3.5rem;
+            overflow:hidden; border-radius:var(--radius2);
+            border:1px solid rgba(232,200,122,0.12);
+            background: rgba(255,255,255,0.02);
+        }
+        .carousel-track {
+            display:flex; transition: transform 0.6s cubic-bezier(0.4,0,0.2,1);
+        }
+        .carousel-slide {
+            min-width:100%; padding:4rem 3rem;
+            text-align:center;
+        }
+        .slide-cat {
+            font-size:0.75rem; letter-spacing:0.3em; color:var(--gray2);
+            text-transform:uppercase; margin-bottom:1rem;
+        }
+        .slide-title {
+            font-family:'Unbounded',sans-serif;
+            font-size:clamp(1.2rem,3vw,2rem); color:var(--white);
+            font-weight:700; margin-bottom:2rem;
+        }
+        .slide-winner {
+            font-family:'Unbounded',sans-serif;
+            font-size:clamp(1.6rem,5vw,3.5rem); font-weight:900;
+            color:var(--gold);
+            filter: drop-shadow(0 0 20px rgba(232,200,122,0.4));
+        }
+        .slide-badge {
+            display:inline-block; margin-top:1.2rem;
+            background: rgba(232,200,122,0.1);
+            border:1px solid rgba(232,200,122,0.25);
+            color:var(--gold); font-size:0.75rem; letter-spacing:0.1em;
+            padding:5px 14px; border-radius:100px;
+        }
+        .carousel-controls {
+            display:flex; align-items:center; justify-content:center;
+            gap:1rem; margin-top:2rem;
+        }
+        .carousel-btn {
+            width:44px; height:44px; border-radius:50%;
+            background:rgba(232,200,122,0.08);
+            border:1px solid rgba(232,200,122,0.2);
+            color:var(--gold); cursor:pointer;
+            display:flex; align-items:center; justify-content:center;
+            font-size:1.1rem; transition:all 0.25s;
+        }
+        .carousel-btn:hover {
+            background:rgba(232,200,122,0.15);
+            box-shadow:0 0 14px rgba(232,200,122,0.3);
+        }
+        .carousel-dots {
+            display:flex; gap:6px; align-items:center;
+        }
+        .dot {
+            width:6px; height:6px; border-radius:50%;
+            background:rgba(232,200,122,0.25);
+            cursor:pointer; transition:all 0.3s;
+        }
+        .dot.active {
+            background:var(--gold); transform:scale(1.4);
+        }
+
+        /* ─── NOMINATIONS ─── */
+        .noms-grid {
+            display:grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap:1.5rem; margin-top:3.5rem;
+        }
+        .nom-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+            border:1px solid rgba(232,200,122,0.1);
+            border-radius:var(--radius2); padding:2.5rem;
+            cursor:pointer; transition:all 0.35s;
+            position:relative; overflow:hidden;
+        }
+        .nom-card::before {
+            content:''; position:absolute;
+            inset:0; border-radius:inherit;
+            background: linear-gradient(135deg, rgba(232,200,122,0.08) 0%, transparent 60%);
+            opacity:0; transition: opacity 0.3s;
+        }
+        .nom-card:hover { border-color:rgba(232,200,122,0.35); transform:translateY(-6px); }
+        .nom-card:hover::before { opacity:1; }
+        .nom-card-shine {
+            position:absolute; inset:0; border-radius:inherit;
+            background: radial-gradient(600px circle at var(--mouse-x,0) var(--mouse-y,0), rgba(232,200,122,0.07), transparent 40%);
+            pointer-events:none;
+        }
+        .nom-icon {
+            width:52px; height:52px; border-radius:14px;
+            background:rgba(232,200,122,0.08);
+            border:1px solid rgba(232,200,122,0.15);
+            display:flex; align-items:center; justify-content:center;
+            font-size:1.5rem; margin-bottom:1.5rem;
+        }
+        .nom-card-title {
+            font-family:'Unbounded',sans-serif;
+            font-size:1rem; font-weight:700; margin-bottom:0.8rem;
+            color:var(--white);
+        }
+        .nom-card-desc {
+            font-size:0.85rem; color:var(--gray2);
+            line-height:1.65;
+        }
+        .nom-card-tag {
+            display:inline-flex; align-items:center; gap:6px;
+            margin-top:1.5rem;
+            background:rgba(232,200,122,0.07);
+            border:1px solid rgba(232,200,122,0.15);
+            color:var(--gold); font-size:0.75rem; letter-spacing:0.05em;
+            padding:5px 12px; border-radius:100px;
+            transition:all 0.25s;
+        }
+        .nom-card:hover .nom-card-tag {
+            background:var(--gold-dim); border-color:var(--gold);
+        }
+
+        /* ─── TIMER ─── */
+        .timer-section {
+            background: linear-gradient(135deg, rgba(232,200,122,0.04) 0%, rgba(6,7,13,0) 100%);
+            border-top:1px solid rgba(232,200,122,0.07);
+            border-bottom:1px solid rgba(232,200,122,0.07);
+            padding: clamp(4rem,8vw,7rem) clamp(1rem,5vw,4rem);
+            text-align:center; position:relative; overflow:hidden;
+        }
+        .timer-inner { max-width:1280px; margin:0 auto; }
+        .timer-heading {
+            font-family:'Unbounded',sans-serif;
+            font-size:clamp(0.85rem,2vw,1rem);
+            letter-spacing:0.3em; color:var(--gold);
+            text-transform:uppercase; margin-bottom:3rem;
+        }
+        .timer-grid {
+            display:flex; justify-content:center; gap:2rem; flex-wrap:wrap;
+        }
+        .timer-unit {
+            min-width:110px;
+            display:flex; flex-direction:column; align-items:center; gap:0.8rem;
+        }
+        .timer-val {
+            font-family:'Unbounded',sans-serif;
+            font-size:clamp(3rem,8vw,6rem); font-weight:900;
+            color:var(--gold); line-height:1;
+            position:relative;
+        }
+        .timer-val::after {
+            content: attr(data-val);
+            position:absolute; inset:0;
+            color:transparent;
+            -webkit-text-stroke:1px rgba(232,200,122,0.2);
+            animation: digitGlow 2s ease-in-out infinite;
+        }
+        @keyframes digitGlow {
+            0%,100%{ filter:drop-shadow(0 0 8px rgba(232,200,122,0.3)); }
+            50%{ filter:drop-shadow(0 0 20px rgba(232,200,122,0.7)); }
+        }
+        .timer-sep {
+            font-family:'Unbounded',sans-serif;
+            font-size:clamp(2rem,6vw,5rem); font-weight:300; color:rgba(232,200,122,0.25);
+            align-self:center; padding-bottom:0.5rem;
+        }
+        .timer-lbl { font-size:0.72rem; letter-spacing:0.25em; color:var(--gray); text-transform:uppercase; }
+        .timer-note {
+            margin-top:2.5rem; color:var(--gray2); font-size:0.9rem; line-height:1.7;
+        }
+        .timer-ended {
+            font-family:'Unbounded',sans-serif;
+            font-size:clamp(1.5rem,5vw,3rem); font-weight:900;
+            color:var(--gold); padding:2rem 0;
+        }
+
+        /* ─── FAQ ─── */
+        .faq-list { max-width:720px; margin:3.5rem auto 0; display:flex; flex-direction:column; gap:10px; }
+        .faq-item {
+            background:rgba(255,255,255,0.02);
+            border:1px solid rgba(232,200,122,0.1);
+            border-radius:var(--radius);
+            overflow:hidden; transition: border-color 0.25s;
+        }
+        .faq-item:hover { border-color:rgba(232,200,122,0.25); }
+        .faq-item.open { border-color:rgba(232,200,122,0.3); }
+        .faq-q {
+            padding:1.2rem 1.5rem; cursor:pointer;
+            display:flex; justify-content:space-between; align-items:center; gap:1rem;
+            color:var(--white); font-weight:600; font-size:0.9rem; line-height:1.4;
+        }
+        .faq-icon {
+            width:28px; height:28px; min-width:28px;
+            border-radius:50%; border:1px solid rgba(232,200,122,0.25);
+            display:flex; align-items:center; justify-content:center;
+            color:var(--gold); font-size:1rem;
+            transition: transform 0.3s, background 0.25s;
+        }
+        .faq-item.open .faq-icon { transform:rotate(45deg); background:var(--gold-dim); }
+        .faq-a {
+            max-height:0; overflow:hidden;
+            transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), padding 0.3s;
+            color:var(--gray2); font-size:0.88rem; line-height:1.75;
+        }
+        .faq-a-inner { padding:0 1.5rem 1.4rem; }
+        .faq-item.open .faq-a { max-height:500px; }
+        .faq-link { color:var(--gold); text-decoration:none; }
+        .faq-link:hover { text-decoration:underline; }
+
+        /* ─── FOOTER ─── */
+        footer {
+            padding:3rem clamp(1rem,5vw,4rem);
+            border-top:1px solid rgba(232,200,122,0.07);
+            display:flex; justify-content:space-between; align-items:center;
+            gap:1rem; flex-wrap:wrap;
+            position:relative; z-index:1;
+        }
+        .footer-logo {
+            font-family:'Unbounded',sans-serif;
+            font-size:1rem; font-weight:900; color:var(--gold);
+            letter-spacing:0.08em;
+        }
+        .footer-links { display:flex; gap:1.5rem; }
+        .footer-link {
+            color:var(--gray); font-size:0.83rem; text-decoration:none;
+            transition: color 0.2s;
+        }
+        .footer-link:hover { color:var(--white); }
+        .footer-copy { color:var(--gray); font-size:0.78rem; }
+
+        /* ─── MODALS ─── */
+        .modal {
+            position:fixed; inset:0; z-index:800;
+            background:rgba(6,7,13,0.85);
+            backdrop-filter:blur(12px);
+            display:none; align-items:center; justify-content:center;
+            padding:1rem;
+        }
+        .modal.open { display:flex; }
+        .modal-box {
+            background:var(--bg2);
+            border:1px solid rgba(232,200,122,0.15);
+            border-radius:var(--radius2); width:100%; max-width:560px;
+            max-height:90svh; overflow:hidden;
+            display:flex; flex-direction:column;
+            animation: modalIn 0.3s cubic-bezier(0.16,1,0.3,1);
+            box-shadow:0 40px 80px rgba(0,0,0,0.6);
+        }
+        .modal-box-wide { max-width:860px; }
+        @keyframes modalIn {
+            from { opacity:0; transform:scale(0.93) translateY(16px); }
+            to   { opacity:1; transform:scale(1) translateY(0); }
+        }
+        .modal-header {
+            padding:1.5rem 2rem; display:flex;
+            justify-content:space-between; align-items:center;
+            border-bottom:1px solid rgba(232,200,122,0.1);
+            flex-shrink:0;
+        }
+        .modal-title {
+            font-family:'Unbounded',sans-serif;
+            font-size:1rem; font-weight:700; color:var(--gold);
+        }
+        .modal-close {
+            width:32px; height:32px; border-radius:8px;
+            background:rgba(255,255,255,0.05);
+            border:none; color:var(--gray2); cursor:pointer;
+            font-size:1.2rem; display:flex; align-items:center; justify-content:center;
+            transition:all 0.2s;
+        }
+        .modal-close:hover { background:rgba(255,255,255,0.1); color:var(--white); }
+        .modal-body {
+            padding:1.5rem 2rem; overflow-y:auto; flex:1;
+        }
+        .modal-footer {
+            padding:1.2rem 2rem;
+            border-top:1px solid rgba(232,200,122,0.1);
+            display:flex; gap:10px; flex-wrap:wrap; flex-shrink:0;
+        }
+
+        /* ─── AUTH ─── */
+        .auth-tabs { display:flex; gap:4px; margin-bottom:1.5rem; }
+        .auth-tab {
+            padding:8px 18px; border-radius:8px;
+            background:none; border:none; cursor:pointer;
+            color:var(--gray2); font-family:'Inter',sans-serif;
+            font-size:0.88rem; font-weight:600; transition:all 0.2s;
+        }
+        .auth-tab.active {
+            background:var(--gold-dim); color:var(--gold);
+            border:1px solid rgba(232,200,122,0.25);
+        }
+        .tab-content { display:none; }
+        .tab-content.active { display:block; }
+        .input {
+            width:100%; background:rgba(255,255,255,0.04);
+            border:1px solid rgba(232,200,122,0.15);
+            border-radius:10px; padding:12px 16px;
+            color:var(--white); font-family:'Inter',sans-serif;
+            font-size:0.9rem; transition:all 0.2s;
+            margin-bottom:12px;
+        }
+        .input:focus {
+            outline:none;
+            border-color:rgba(232,200,122,0.5);
+            background:rgba(232,200,122,0.04);
+            box-shadow:0 0 0 3px rgba(232,200,122,0.08);
+        }
+        .input::placeholder { color:var(--gray); }
+        select.input option { background:var(--bg2); }
+        textarea.input { resize:vertical; min-height:90px; }
+        .form-msg {
+            padding:10px 14px; border-radius:10px;
+            font-size:0.85rem; margin-bottom:14px;
+        }
+        .form-msg.success { background:rgba(85,187,119,0.15); border:1px solid rgba(85,187,119,0.3); color:#7ed498; }
+        .form-msg.error { background:rgba(224,85,85,0.15); border:1px solid rgba(224,85,85,0.3); color:#ee8080; }
+
+        /* ─── VOTING MODALS ─── */
+        .vote-grid {
+            display:grid;
+            grid-template-columns:repeat(auto-fill, minmax(160px,1fr));
+            gap:12px; padding-bottom:1rem;
+        }
+        .nom-vote-card {
+            background:rgba(255,255,255,0.02);
+            border:1px solid rgba(232,200,122,0.1);
+            border-radius:var(--radius); overflow:hidden;
+            cursor:pointer; transition:all 0.25s;
+            display:flex; flex-direction:column;
+        }
+        .nom-vote-card:hover { border-color:rgba(232,200,122,0.3); transform:translateY(-3px); }
+        .nom-vote-card.voted { border-color:rgba(85,187,119,0.4); background:rgba(85,187,119,0.05); }
+        .nom-vote-img { width:100%; aspect-ratio:4/3; object-fit:cover; display:block; }
+        .nom-vote-info { padding:10px 12px; flex:1; }
+        .nom-vote-name { font-size:0.78rem; font-weight:700; color:var(--white); line-height:1.3; margin-bottom:4px; }
+        .nom-vote-status { font-size:0.7rem; color:var(--gray2); }
+        .nom-vote-card.voted .nom-vote-status { color:var(--green); }
+
+        .nominee-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); gap:12px; }
+        .nominee-card {
+            background:rgba(255,255,255,0.03);
+            border:2px solid rgba(232,200,122,0.08);
+            border-radius:var(--radius); overflow:hidden;
+            cursor:pointer; transition:all 0.25s; text-align:center;
+        }
+        .nominee-card:hover { border-color:rgba(232,200,122,0.3); transform:translateY(-3px); }
+        .nominee-card.selected {
+            border-color:var(--gold);
+            background:rgba(232,200,122,0.06);
+            box-shadow:0 0 20px rgba(232,200,122,0.2);
+        }
+        .nominee-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; }
+        .nominee-name { padding:8px 8px 10px; font-size:0.78rem; font-weight:600; color:var(--white); line-height:1.3; }
+        .track-opt {
+            padding:14px 16px; border-radius:10px;
+            background:rgba(255,255,255,0.03);
+            border:2px solid rgba(232,200,122,0.08);
+            margin-bottom:10px; cursor:pointer;
+            transition:all 0.25s; display:flex; justify-content:space-between; align-items:center;
+        }
+        .track-opt:hover { border-color:rgba(232,200,122,0.3); }
+        .track-opt.selected { border-color:var(--gold); background:rgba(232,200,122,0.05); }
+        .track-link { color:var(--gold); text-decoration:none; font-size:0.8rem; }
+        .track-link:hover { text-decoration:underline; }
+        .nom-desc {
+            color:var(--gray2); font-size:0.87rem; line-height:1.65;
+            margin-bottom:1.5rem; padding:12px 16px;
+            background:rgba(232,200,122,0.04); border-radius:10px;
+            border-left:3px solid rgba(232,200,122,0.3);
+        }
+        .other-field { margin-top:14px; display:none; }
+
+        /* ─── ADMIN ─── */
+        .admin-section { margin-bottom:2.5rem; }
+        .admin-subtitle {
+            font-family:'Unbounded',sans-serif; font-size:0.9rem; font-weight:700;
+            color:var(--gold); margin-bottom:1.2rem;
+        }
+        .result-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:12px; }
+        .result-card {
+            background:rgba(255,255,255,0.03); border:1px solid rgba(232,200,122,0.1);
+            border-radius:var(--radius); padding:1.2rem;
+        }
+        .rc-title { font-size:0.85rem; font-weight:700; color:var(--gold); margin-bottom:0.8rem; }
+        .rc-row { display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid rgba(255,255,255,0.05); font-size:0.82rem; color:var(--gray2); }
+        .rc-row:last-child { border:none; }
+        .rc-row.winner { color:var(--gold); font-weight:600; }
+        .stat-row { display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.05); font-size:0.88rem; color:var(--gray2); }
+        .stat-row:last-child { border:none; }
+        .stat-row span:last-child { color:var(--white); font-weight:600; }
+        .sync-badge {
+            display:inline-flex; align-items:center; gap:6px;
+            padding:5px 12px; border-radius:100px;
+            font-size:0.75rem; margin-bottom:1.2rem;
+        }
+        .sync-badge.ok { background:rgba(85,187,119,0.15); color:#7ed498; border:1px solid rgba(85,187,119,0.25); }
+        .sync-badge.err { background:rgba(224,85,85,0.15); color:#ee8080; border:1px solid rgba(224,85,85,0.25); }
+
+        /* ─── POLL BTN ─── */
+        .poll-fab {
+            position:fixed; bottom:28px; right:28px; z-index:499;
+            background: linear-gradient(135deg,var(--gold) 0%,var(--gold2) 100%);
+            color:var(--bg); font-family:'Inter',sans-serif;
+            font-size:0.82rem; font-weight:700;
+            padding:12px 22px; border-radius:100px; border:none;
+            cursor:pointer; box-shadow: 0 8px 24px rgba(232,200,122,0.35);
+            transition:all 0.3s; display:flex; align-items:center; gap:8px;
+        }
+        .poll-fab:hover {
+            transform:translateY(-3px);
+            box-shadow: 0 14px 32px rgba(232,200,122,0.45);
+        }
+        .poll-fab-dot {
+            width:8px; height:8px; background:var(--bg); border-radius:50%;
+            animation: dotPulse 1.5s ease infinite;
+        }
+        @keyframes dotPulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.4);} }
+
+        /* ─── REVEAL ANIMATION ─── */
+        .reveal {
+            opacity:0; transform:translateY(24px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .reveal.visible { opacity:1; transform:none; }
+
+        /* ─── GRID BACKGROUND ─── */
+        .grid-bg {
+            position:fixed; inset:0; z-index:0; pointer-events:none;
+            opacity:0.03;
+            background-image:
+                linear-gradient(var(--gold) 1px, transparent 1px),
+                linear-gradient(90deg, var(--gold) 1px, transparent 1px);
+            background-size:60px 60px;
+        }
+
+        /* ─── RESPONSIVE ─── */
+        @media(max-width:640px){
+            .header-nav { display:none; }
+            .hero-cta { flex-direction:column; align-items:center; }
+            .btn-primary, .btn-secondary { width:100%; max-width:280px; }
+            .stats-row { grid-template-columns:1fr 1fr; }
+            footer { flex-direction:column; text-align:center; }
+            .footer-links { justify-content:center; }
+            .carousel-slide { padding:2.5rem 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Grid background -->
+<div class="grid-bg"></div>
+
+<!-- Particles -->
+<div id="particles"></div>
+
+<!-- Splash -->
+<div id="splash">
+    <div class="splash-ring"></div>
+    <div class="splash-title">FLARE</div>
+    <div class="splash-sub">НОДБИН ЖОСКИ · 2026</div>
+</div>
+
+<!-- Header -->
+<header id="header">
+    <div class="header-logo">FLARE 2026</div>
+    <nav class="header-nav">
+        <a class="nav-link" href="#about">О премии</a>
+        <a class="nav-link" href="#previous">Прошлый год</a>
+        <a class="nav-link" href="#nominations">Номинации</a>
+        <a class="nav-link" href="#faq">FAQ</a>
+    </nav>
+    <div class="header-right">
+        <div class="admin-wrap" id="adminWrap" style="display:none">
+            <button class="btn-header" id="adminBtn">Панель</button>
+            <div class="admin-dropdown" id="adminDrop">
+                <div class="admin-item" id="aResultsBtn">Результаты</div>
+                <div class="admin-item" id="aStatsBtn">Статистика</div>
+                <div class="admin-item" id="aReportsBtn">Репорты <span class="badge" id="reportsCount">0</span></div>
+            </div>
+        </div>
+        <button class="btn-header" id="authBtn">Войти</button>
+    </div>
+</header>
+
+<!-- Hero -->
+<section class="hero" id="heroSection" style="position:relative">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="hero-eyebrow">Главная Премия Нодбин Жоски</div>
+    <h1 class="hero-title">FLARE</h1>
+    <div class="hero-year">2026</div>
+    <p class="hero-sub">Ежегодная премия, где только вы определяете лучших. Голосуйте честно — легенды решаются здесь.</p>
+    <div class="hero-cta">
+        <button class="btn-primary" id="voteMainBtn">Основные номинации</button>
+        <button class="btn-secondary" id="voteAddBtn">Дополнительные</button>
+    </div>
+    <div class="hero-scroll-hint">
+        <div class="scroll-line"></div>
+        <span>Скролл</span>
+    </div>
+</section>
+
+<!-- About -->
+<section class="section reveal" id="about">
+    <span class="section-label">О премии</span>
+    <h2 class="section-title">Что такое FLARE?</h2>
+    <div class="about-grid">
+        <div class="about-text">
+            <p><strong>FLARE 2026</strong> — это шестая ежегодная церемония награждения, где каждый участник сервера Нодбин Жоски выбирает лучших из лучших.</p>
+            <p>Мы отмечаем самых активных, талантливых и запоминающихся людей года. Никакого жюри — только честное голосование сообщества.</p>
+            <p>18 номинаций, реальные люди, реальные события — всё то, что делало этот год особенным.</p>
+            <div class="stats-row">
+                <div class="stat-card">
+                    <div class="stat-num">18</div>
+                    <div class="stat-label">номинаций</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-num">10</div>
+                    <div class="stat-label">участников</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-num">6</div>
+                    <div class="stat-label">лет подряд</div>
+                </div>
+            </div>
+        </div>
+        <div class="about-img-frame">
+            <img src="https://i.postimg.cc/ZqYkxMBw/nodbin-joski-1.png" alt="FLARE 2026">
+        </div>
+    </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- Previous Results -->
+<section class="prev-section reveal" id="previous">
+    <div class="prev-inner">
+        <span class="section-label">История</span>
+        <h2 class="section-title">Победители FLARE 2025</h2>
+        <div class="carousel-wrap">
+            <div class="carousel-track" id="carouselTrack"></div>
+        </div>
+        <div class="carousel-controls">
+            <button class="carousel-btn" id="prevBtn">&#8592;</button>
+            <div class="carousel-dots" id="carouselDots"></div>
+            <button class="carousel-btn" id="nextBtn">&#8594;</button>
+        </div>
+    </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- Nominations -->
+<section class="section reveal" id="nominations">
+    <span class="section-label">Голосование</span>
+    <h2 class="section-title">Категории номинаций</h2>
+    <p class="section-desc">Два блока номинаций — основные и дополнительные. Войдите, чтобы проголосовать.</p>
+    <div class="noms-grid">
+        <div class="nom-card" id="mainNomCard">
+            <div class="nom-card-shine"></div>
+            <div class="nom-icon">👑</div>
+            <div class="nom-card-title">Основные номинации</div>
+            <div class="nom-card-desc">8 главных наград года — от FLARE KING до Прорыва года. Самые престижные категории.</div>
+            <div class="nom-card-tag">8 номинаций · Голосовать →</div>
+        </div>
+        <div class="nom-card" id="addNomCard">
+            <div class="nom-card-shine"></div>
+            <div class="nom-icon">⭐</div>
+            <div class="nom-card-title">Дополнительные номинации</div>
+            <div class="nom-card-desc">10 специальных категорий — треки, мемы, провалы, дуэты и многое другое.</div>
+            <div class="nom-card-tag">10 номинаций · Голосовать →</div>
+        </div>
+    </div>
+</section>
+
+<!-- Timer -->
+<section class="timer-section reveal">
+    <div class="timer-inner">
+        <div class="timer-heading">До окончания голосования</div>
+        <div class="timer-grid" id="timerGrid">
+            <div class="timer-unit">
+                <div class="timer-val" id="timerD">00</div>
+                <div class="timer-lbl">Дней</div>
+            </div>
+            <div class="timer-sep">:</div>
+            <div class="timer-unit">
+                <div class="timer-val" id="timerH">00</div>
+                <div class="timer-lbl">Часов</div>
+            </div>
+            <div class="timer-sep">:</div>
+            <div class="timer-unit">
+                <div class="timer-val" id="timerM">00</div>
+                <div class="timer-lbl">Минут</div>
+            </div>
+            <div class="timer-sep">:</div>
+            <div class="timer-unit">
+                <div class="timer-val" id="timerS">00</div>
+                <div class="timer-lbl">Секунд</div>
+            </div>
+        </div>
+        <p class="timer-note">Трансляция премии — на Трибуне сервера в 18:00 по МСК</p>
+    </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FAQ -->
+<section class="section reveal" id="faq">
+    <span class="section-label">Помощь</span>
+    <h2 class="section-title">Частые вопросы</h2>
+    <div class="faq-list">
+        <div class="faq-item">
+            <div class="faq-q">
+                <span>Правила голосования</span>
+                <span class="faq-icon">+</span>
+            </div>
+            <div class="faq-a"><div class="faq-a-inner">
+                <p>1. Выбирайте любой понравившийся вариант.</p>
+                <p>2. Запрещена накрутка голосов.</p>
+                <p>3. Запрещено голосовать за самого себя (кроме конфликта, дуо, события, провала и фразы года).</p>
+                <p>4. В поле «Другое» принимаются только никнеймы участников сервера или реальные события.</p>
+            </div></div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q">
+                <span>Как зарегистрироваться?</span>
+                <span class="faq-icon">+</span>
+            </div>
+            <div class="faq-a"><div class="faq-a-inner">
+                <p>Нажмите кнопку «Войти» вверху справа. Введите свой Discord никнейм и придумайте надёжный пароль. Если ваш аккаунт уже кто-то занял — обратитесь к главе сервера.</p>
+            </div></div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q">
+                <span>Где пройдёт церемония?</span>
+                <span class="faq-icon">+</span>
+            </div>
+            <div class="faq-a"><div class="faq-a-inner">
+                <p>На Трибуне сервера Нодбин Жоски в 18:00 по МСК. Следите за анонсами.</p>
+            </div></div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q">
+                <span>Как помочь улучшить FLARE?</span>
+                <span class="faq-icon">+</span>
+            </div>
+            <div class="faq-a"><div class="faq-a-inner">
+                <p>Заполните опрос — кнопка внизу справа. Там вы можете поделиться идеями и впечатлениями от этого года.</p>
+            </div></div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q">
+                <span>Нашли баг или недоработку?</span>
+                <span class="faq-icon">+</span>
+            </div>
+            <div class="faq-a"><div class="faq-a-inner">
+                <p>Сообщите об этом через <a href="#" class="faq-link" id="reportLink">форму репорта</a>. Мы постараемся исправить как можно быстрее.</p>
+            </div></div>
+        </div>
+    </div>
+</section>
+
+<!-- Admin Panel -->
+<section class="section" id="adminSection" style="display:none">
+    <span class="section-label">Только для администраторов</span>
+    <h2 class="section-title">Панель управления</h2>
+    <div id="syncStatusEl"></div>
+    <div style="margin-top:2rem">
+        <div class="admin-section" id="adminResultsSection" style="display:none">
+            <div class="admin-subtitle">Результаты голосования</div>
+            <div class="result-grid" id="adminResultsGrid"></div>
+            <div style="display:flex;gap:10px;margin-top:1.2rem;flex-wrap:wrap">
+                <button class="btn-primary" style="font-size:0.82rem;padding:10px 20px" id="exportBtn">Экспорт JSON</button>
+                <button class="btn-secondary" style="font-size:0.82rem;padding:10px 20px" id="forceSyncBtn">Синхронизировать</button>
+            </div>
+        </div>
+        <div class="admin-section" id="adminStatsSection" style="display:none">
+            <div class="admin-subtitle">Статистика</div>
+            <div id="adminStatsContent"></div>
+        </div>
+        <div class="admin-section" id="adminReportsSection" style="display:none">
+            <div class="admin-subtitle">Репорты</div>
+            <div id="adminReportsContent"></div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer>
+    <div class="footer-logo">FLARE 2026</div>
+    <div class="footer-links">
+        <a href="#faq" class="footer-link">Правила</a>
+        <a href="#" class="footer-link" id="footerReport">Контакты</a>
+    </div>
+    <span class="footer-copy">© 2026 FLARE Awards · Нодбин Жоски</span>
+</footer>
+
+<!-- Poll FAB -->
+<button class="poll-fab" id="pollFab">
+    <span class="poll-fab-dot"></span>
+    Опрос
+</button>
+
+<!-- ─── MODALS ─── -->
+
+<!-- Auth Modal -->
+<div class="modal" id="authModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <span class="modal-title">Аутентификация</span>
+            <button class="modal-close" data-close="authModal">×</button>
+        </div>
+        <div class="modal-body">
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-tab="loginTab">Войти</button>
+                <button class="auth-tab" data-tab="registerTab">Регистрация</button>
+            </div>
+            <div class="tab-content active" id="loginTab">
+                <div id="loginMsg"></div>
+                <input class="input" id="loginUser" placeholder="Discord никнейм" autocomplete="username">
+                <input class="input" id="loginPass" type="password" placeholder="Пароль" autocomplete="current-password">
+            </div>
+            <div class="tab-content" id="registerTab">
+                <div id="registerMsg"></div>
+                <input class="input" id="regUser" placeholder="Discord никнейм" autocomplete="username">
+                <input class="input" id="regPass" type="password" placeholder="Придумайте пароль" autocomplete="new-password">
+                <input class="input" id="regPass2" type="password" placeholder="Повторите пароль" autocomplete="new-password">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-primary" id="authSubmitBtn" style="flex:1">Войти</button>
+        </div>
+    </div>
+</div>
+
+<!-- Nominations Modal -->
+<div class="modal" id="nomModal">
+    <div class="modal-box modal-box-wide">
+        <div class="modal-header">
+            <span class="modal-title" id="nomModalTitle">Номинации</span>
+            <button class="modal-close" data-close="nomModal">×</button>
+        </div>
+        <div class="modal-body">
+            <div class="vote-grid" id="nomGrid"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Nominees Modal -->
+<div class="modal" id="nomineeModal">
+    <div class="modal-box modal-box-wide">
+        <div class="modal-header">
+            <span class="modal-title" id="nomineeModalTitle">Выберите номинанта</span>
+            <button class="modal-close" data-close="nomineeModal">×</button>
+        </div>
+        <div class="modal-body">
+            <div class="nom-desc" id="nomDesc"></div>
+            <div id="nomVoteSuccessMsg"></div>
+            <div id="nomineeGrid"></div>
+            <div class="other-field" id="otherField">
+                <input class="input" id="otherInput" placeholder="Введите никнейм участника или событие...">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-secondary" id="backToNomBtn" style="flex:0 0 auto;padding:12px 20px">← Назад</button>
+            <button class="btn-primary" id="confirmVoteBtn" disabled style="flex:1">Подтвердить голос</button>
+        </div>
+    </div>
+</div>
+
+<!-- Report Modal -->
+<div class="modal" id="reportModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <span class="modal-title">Сообщить о проблеме</span>
+            <button class="modal-close" data-close="reportModal">×</button>
+        </div>
+        <div class="modal-body">
+            <div id="reportMsg"></div>
+            <input class="input" id="reportNick" placeholder="Ваш никнейм">
+            <select class="input" id="reportReason">
+                <option value="" disabled selected>Причина</option>
+                <option value="bug">Найден баг</option>
+                <option value="improvement">Недоработка</option>
+                <option value="idea">Идея</option>
+            </select>
+            <textarea class="input" id="reportDesc" placeholder="Опишите подробнее..."></textarea>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-primary" id="submitReport" style="flex:1">Отправить</button>
+        </div>
+    </div>
+</div>
+
+<!-- Poll Modal -->
+<div class="modal" id="pollModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <span class="modal-title">Опрос FLARE 2026</span>
+            <button class="modal-close" data-close="pollModal">×</button>
+        </div>
+        <div class="modal-body">
+            <div id="pollMsg"></div>
+            <div style="margin-bottom:1.2rem">
+                <label style="font-size:0.85rem;color:var(--gold);font-weight:600;display:block;margin-bottom:8px">1. Что думаешь о FLARE 2026?</label>
+                <textarea class="input" id="pollQ1" placeholder="Ваш ответ..."></textarea>
+            </div>
+            <div style="margin-bottom:1.2rem">
+                <label style="font-size:0.85rem;color:var(--gold);font-weight:600;display:block;margin-bottom:8px">2. Какую номинацию добавить в следующем году?</label>
+                <textarea class="input" id="pollQ2" placeholder="Ваш ответ..."></textarea>
+            </div>
+            <div style="margin-bottom:1.2rem">
+                <label style="font-size:0.85rem;color:var(--gold);font-weight:600;display:block;margin-bottom:8px">3. FLARE стал лучше по сравнению с прошлым годом?</label>
+                <textarea class="input" id="pollQ3" placeholder="Ваш ответ..."></textarea>
+            </div>
+            <div style="margin-bottom:0.5rem">
+                <label style="font-size:0.85rem;color:var(--gold);font-weight:600;display:block;margin-bottom:8px">4. Что улучшить в следующий раз?</label>
+                <textarea class="input" id="pollQ4" placeholder="Ваш ответ..."></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-primary" id="submitPoll" style="flex:1">Отправить</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════
+// CONFIG
+// ═══════════════════════════════════════
+
+const JSONBIN_API_KEY = '$2a$10$ZzqGSk9XmuCwrk6P2I0NNOjjfT/hS0tnyod4TaKGfz8pGZ/BIgHzO';
+const JSONBIN_BIN_ID = '6910cb5bae596e708f4e9a29';
+
+const ALLOWED_NICKNAMES = {
+    'maronnix': ['maronnix','maronn','maron','maronnix9991'],
+    'qusti': ['qusti','qusti1','qusti11','qusti111','qust1'],
+    'dony_zq': ['dony_zq','sad_dony','uw7dhdywg'],
+    'makos': ['makos','akirakume'],
+    'izumrudik': ['izumrudik','ivan_5886','2010_1702'],
+    'nodben': ['nodben','noden'],
+    'menchik': ['menchik','s1b+','sss+','jr1_s'],
+    'cloury': ['cloury','ainiiiaz0132','ainiiiaz'],
+    'flourin': ['flourin','flouurinskiy','flourinees'],
+    'eozik': ['eozik','seriy_eozik']
+};
+
+const ADMIN_USERS = ['maronnix','maronnix9991'];
+
+const AVATAR_IMAGES = {
+    "Akirakume":"https://i.postimg.cc/DzHC447W/Akirakume.png",
+    "Dony_zq":"https://i.postimg.cc/ydRLm6NZ/Dony-zq.png",
+    "Eozik":"https://i.postimg.cc/gJhgVc0q/Eozik.png",
+    "Flourin":"https://i.postimg.cc/qRK1sB7w/Flourin.png",
+    "Maronnix":"https://i.postimg.cc/B6FmTZvz/Maronnix.png",
+    "Nodben":"https://i.postimg.cc/DZGxrfzH/Nodben.png",
+    "Qusti":"https://i.postimg.cc/PJk22GL6/Qusti.png",
+    "Cloury":"https://i.postimg.cc/d0pWZZJ8/Cloury.png",
+    "Menchik":"https://i.postimg.cc/W3Z5Gp4K/Menchik.png",
+    "Izumrudik":"https://i.postimg.cc/FRSTyFKB/Izumrudik.png",
+    "Denis_185":"https://i.postimg.cc/hthb7rhp/Denis-185.png",
+    "Fines":"https://i.postimg.cc/K84rgN4W/Fines.png",
+    "Otmorozik":"https://i.postimg.cc/N0H6dj6G/Otmorozik.png",
+    "Hasan":"https://i.postimg.cc/NMXd6G0C/Hasan.png",
+    "Counter-Strike 2":"https://i.postimg.cc/4yN0mVgg/cs2.png",
+    "Fortnite":"https://i.postimg.cc/KjvWRB2G/fortnite.png",
+    "Garry's Mod":"https://i.postimg.cc/fyvhPmcb/garrysmod.png",
+    "Marvel's Spider-Man 2":"https://i.postimg.cc/J062J0rW/msm2.png",
+    "Among Us":"https://i.postimg.cc/RhsDfhMj/amongus.png",
+    "Roblox":"https://i.postimg.cc/cC9bYCxH/roblox.png",
+    "Rematch":"https://i.postimg.cc/2S41LQLJ/Rematch.png",
+    "Akirakume, Eozik, Flourin, Maronnix, Nodben x Fines, Denis_185":"https://i.postimg.cc/FK8Pkkhk/Akirakume-Eozik-Flourin-Maronnix-Nodben-x-Fines-Denis-185.png",
+    "Akirakume x Flourin":"https://i.postimg.cc/TPFk55Tb/Akirakume-x-Flourin.png",
+    "Akirakume x Otmorozik":"https://i.postimg.cc/q7Sm66p3/Akirakume-x-Otmorozik.png",
+    "Eozik x Izumrudik":"https://i.postimg.cc/nzm34VLq/Eozik-x-Izumrudik.png",
+    "Akirakume x Menchik":"https://i.postimg.cc/ryDnYS9h/Akirakume_x_Menchik.png",
+    "Dony_zq x Nodben":"https://i.postimg.cc/9XD8NGBt/Dony_zq_x_Nodben.png",
+    "Maronnix x Qusti":"https://i.postimg.cc/y6DQrFTQ/Maronnix_x_Qusti.png",
+    "Akirakume x Balabol":"https://i.postimg.cc/05zWHpCc/Akirakume_x_Balabol.png",
+    "Dony_zq x Maronnix":"https://i.postimg.cc/Kc1qsn56/Dony_zq_x_Maronnix.png",
+    "Нодбен начал стримить":"https://i.postimg.cc/xTGtS3Fr/нодбен_начал_стримить.png",
+    "У Макоса появился кот":"https://i.postimg.cc/dVqnQZzR/у_макоса_появился_кот.png",
+    "Игры на CYBERSHOKE":"https://i.postimg.cc/K8Jf1v2V/игры_на_cybershoke.png",
+    "Костя подстригся налысо":"https://i.postimg.cc/7Zm95Y4r/Костя_подстригся_налысо.png",
+    "NJSC - Nodben Joski Server Cup 2025":"https://i.postimg.cc/t4XDRnLn/NJSC.png",
+    "Несостоящаяся встреча Флоурина с Нодбеном":"https://i.postimg.cc/kXNfdvh3/несостаящаяся_встреча_нодбена_и_флоурина.png",
+    "Макос перестал стримить спустя месяц":"https://i.postimg.cc/FHDpYsvQ/макос_перестал_стримить_спустя_месяц.png",
+    "Интернет Нодбена":"https://i.postimg.cc/VkDgJL8h/Интернет_нодбена.png",
+    "Eozik - Я НЕ ВЕРЮ":"https://i.postimg.cc/g2Y4cLf0/я_не_верю.png",
+    "Maronnix - ты чо дурак?":"https://i.postimg.cc/bN03j9FS/ты_чо_дурак.png",
+    "Qusti - 123":"https://i.postimg.cc/XYVxNBTY/123.png",
+    "Qusti - батя твой":"https://i.postimg.cc/6p9z64Dd/батя_твой.png",
+    "Dony_zq - ало пицца":"https://i.postimg.cc/Y9XkGRZJ/alo-picca.png",
+    "Бета-тест Rematch":"https://i.postimg.cc/VkDgJL87/Бета_тест_рематч.png",
+    "Релиз Marvel's Spider-Man 2":"https://i.postimg.cc/Nf8pwkPY/релиз_msm2.png",
+    "На сервере появились новые участники":"https://i.postimg.cc/8PdtVmn1/появились_новые_участники.png",
+    "Выход серии THE FANTASTIC SPIDER-MAN 4 ЭПИЗОД":"https://i.postimg.cc/2S2G18Dc/выход_серии_tfsm4.png",
+    "Eozik x Maronnix":"https://i.postimg.cc/s2jny0tv/Eozik-x-Maronnix.png",
+    "Другое":"https://i.postimg.cc/NFJzTFs5/drugoe.png",
+    "Akirakume x Qusti":"https://i.postimg.cc/pXKjKbgZ/Akirakume-x-Qusti.png"
+};
+
+const NOMINATION_IMAGES = {
+    'flare_king':'https://i.postimg.cc/9F55X1XV/flare_king.png',
+    'game_of_year':'https://i.postimg.cc/wvnKmQhJ/игра_года.png',
+    'best_cs_player':'https://i.postimg.cc/cC3pMtmT/лучший_cs_участник.png',
+    'best_fortnite_player':'https://i.postimg.cc/9096twpJ/лучший_fortnite_участник.png',
+    'multigaming_of_year':'https://i.postimg.cc/k4Lrbvxt/multigaming_года.png',
+    'meme_person_of_year':'https://i.postimg.cc/Fs55FGFv/человек_мем_года.png',
+    'conflict_of_year':'https://i.postimg.cc/yd2qZyF0/конфликт_года.png',
+    'breakthrough_of_year':'https://i.postimg.cc/4ycDbH5S/прорыв_года.png',
+    'track_of_year':'https://i.postimg.cc/05J1qhsn/трек_года.png',
+    'toxic_of_year':'https://i.postimg.cc/zDRY14rf/токсик_года.png',
+    'duo_of_year':'https://i.postimg.cc/k4LrbvxS/дуо_года.png',
+    'gamer_of_year':'https://i.postimg.cc/kGMzppwC/igrok-goda.png',
+    'cringe_of_year':'https://i.postimg.cc/pT3NFJDY/кринж_года.png',
+    'freak_of_year':'https://i.postimg.cc/CLTTMJMT/фрик_года.png',
+    'event_of_year':'https://i.postimg.cc/yxRMX3Pw/событие_года.png',
+    'fail_of_year':'https://i.postimg.cc/sxWk9Gcn/провал_года.png',
+    'phrase_of_year':'https://i.postimg.cc/65JJ6zWF/фраза_года.png',
+    'sos_of_year':'https://i.postimg.cc/HnMq48zG/сос_года.png'
+};
+
+const PREVIOUS_RESULTS = [
+    {nomination:"FLARE KING",winner:"Maronnix"},
+    {nomination:"ИГРА ГОДА",winner:"Fortnite"},
+    {nomination:"MULTIGAMING ГОДА",winner:"Maronnix"},
+    {nomination:"ЛУЧШИЙ CS-УЧАСТНИК",winner:"Akirakume"},
+    {nomination:"ЛУЧШИЙ FORTNITE-УЧАСТНИК",winner:"Dony_zq"},
+    {nomination:"ЛУЧШИЙ PSO-УЧАСТНИК",winner:"Otmorozik"},
+    {nomination:"КОНФЛИКТ ГОДА",winner:"Fines x Flourin"},
+    {nomination:"ЧЕЛОВЕК-МЕМ ГОДА",winner:"Qusti"},
+    {nomination:"ПРОРЫВ ГОДА",winner:"Eozik"}
+];
+
+const NOMINATIONS = {
+    main:[
+        {id:'flare_king',name:'FLARE KING',description:'Номинация для легенды сервера, настоящего короля и самого лучшего участника года.',nominees:["Akirakume","Dony_zq","Eozik","Flourin","Maronnix","Nodben","Qusti"]},
+        {id:'game_of_year',name:'ИГРА ГОДА',description:'Настоящий хит этого года, в которую хотелось играть снова и снова.',nominees:["Counter-Strike 2","Garry's Mod","Marvel's Spider-Man 2","Among Us","Roblox","Rematch"]},
+        {id:'best_cs_player',name:'ЛУЧШИЙ CS-УЧАСТНИК',description:'Участник, который делает только хэдшоты, MVP матча и просто сильнейший.',nominees:["Akirakume","Dony_zq","Eozik","Maronnix","Menchik","Nodben","Qusti","Izumrudik"]},
+        {id:'best_fortnite_player',name:'ЛУЧШИЙ FORTNITE-УЧАСТНИК',description:'Участник, который строит небоскрёбы перед убийством, занимает топ-1 и никогда не промахивается.',nominees:["Akirakume","Dony_zq","Flourin","Izumrudik","Maronnix"]},
+        {id:'multigaming_of_year',name:'MULTIGAMING ГОДА',description:'Жаждет сыграть во все новинки, играет почти во всё и имеет огромную библиотеку в Steam.',nominees:["Akirakume","Dony_zq","Maronnix","Nodben"]},
+        {id:'meme_person_of_year',name:'ЧЕЛОВЕК-МЕМ ГОДА',description:'Тот, кто любой разговор превращает в коллекцию шуток. Его фразы разошлись по всем чатам.',nominees:["Akirakume","Dony_zq","Eozik","Flourin","Izumrudik","Maronnix","Nodben","Qusti"]},
+        {id:'conflict_of_year',name:'КОНФЛИКТ ГОДА',description:'Ничего не предвещало беды, как вдруг появилось оно — самое жаркое событие года.',nominees:["Akirakume, Eozik, Flourin, Maronnix, Nodben x Fines, Denis_185","Akirakume x Flourin","Akirakume x Otmorozik","Eozik x Izumrudik","Akirakume x Qusti"]},
+        {id:'breakthrough_of_year',name:'ПРОРЫВ ГОДА',description:'Начинал год как типичный участник, а теперь общается со всеми и присутствует везде.',nominees:["Cloury","Izumrudik","Hasan","Menchik"]}
+    ],
+    additional:[
+        {id:'track_of_year',name:'ТРЕК ГОДА',description:'Лучший трек, который засел у многих в голове.',nominees:[{name:'Maronn x Eozik - Лютый гандон',link:'https://youtu.be/FWrgYyk0Crs?si=93Zeth0-WWiQSWMd'},{name:'Maronn x Eozik - Полный провал (feat. Makos)',link:'https://youtu.be/eyd1afetXvc?si=2l4ckYWmEunNYF4v'}],hasLinks:true},
+        {id:'toxic_of_year',name:'ТОКСИК ГОДА',description:'Самый злой и агрессивный участник этого года.',nominees:["Akirakume","Eozik","Nodben","Qusti","Flourin","Другое"],hasOther:true},
+        {id:'duo_of_year',name:'ДУО ГОДА',description:'Легендарное дуо, которое знают все. Их совместная игра просто на высоте.',nominees:["Akirakume x Menchik","Dony_zq x Nodben","Maronnix x Qusti","Akirakume x Balabol","Dony_zq x Maronnix","Eozik x Maronnix"]},
+        {id:'gamer_of_year',name:'ИГРОК ГОДА',description:'Участник, который во всех играх побеждал и был лучшим среди всех.',nominees:["Akirakume","Dony_zq","Eozik","Flourin","Maronnix","Menchik","Nodben","Qusti"]},
+        {id:'cringe_of_year',name:'КРИНЖ ГОДА',description:'Тот, чьи слова и действия вызывают неловкость и желание перемотать жизнь на 15 секунд вперёд.',nominees:["Cloury","Flourin","Izumrudik","Nodben"]},
+        {id:'freak_of_year',name:'ФРИК ГОДА',description:'Участник, который вытворял полную дичь в этом году.',nominees:["Akirakume","Cloury","Nodben","Другое"],hasOther:true},
+        {id:'event_of_year',name:'СОБЫТИЕ ГОДА',description:'То, что хотели многие или что многих очень поразило.',nominees:["Нодбен начал стримить","У Макоса появился кот","Игры на CYBERSHOKE","Костя подстригся налысо","NJSC - Nodben Joski Server Cup 2025"]},
+        {id:'fail_of_year',name:'ПРОВАЛ ГОДА',description:'То, что получилось ужасно, хотя хотелось по-другому.',nominees:["Несостоящаяся встреча Флоурина с Нодбеном","Макос перестал стримить спустя месяц","Интернет Нодбена"]},
+        {id:'phrase_of_year',name:'ФРАЗА ГОДА',description:'Самая запоминающаяся фраза от одного из участников в этом году.',nominees:["Eozik - Я НЕ ВЕРЮ","Maronnix - ты чо дурак?","Qusti - 123","Qusti - батя твой","Dony_zq - ало пицца"]},
+        {id:'sos_of_year',name:'С.О.С. ГОДА',description:'Самое ожидаемое событие года — то, чего ждали все.',nominees:["Бета-тест Rematch","Релиз Marvel's Spider-Man 2","На сервере появились новые участники","Выход серии THE FANTASTIC SPIDER-MAN 4 ЭПИЗОД"]}
+    ]
+};
+
+// ═══════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════
+let cloudStorage;
+let votingEnabled = true;
+let currentCategory = null;
+let currentNomination = null;
+let selectedOtherValue = '';
+
+// ═══════════════════════════════════════
+// PARTICLES
+// ═══════════════════════════════════════
+function createParticles(){
+    const container=document.getElementById('particles');
+    for(let i=0;i<40;i++){
+        const p=document.createElement('div');
+        p.className='particle';
+        p.style.left=Math.random()*100+'vw';
+        p.style.animationDuration=(10+Math.random()*20)+'s';
+        p.style.animationDelay=(Math.random()*20)+'s';
+        p.style.width=p.style.height=(1+Math.random()*2.5)+'px';
+        container.appendChild(p);
+    }
+}
+createParticles();
+
+// ═══════════════════════════════════════
+// CARD SHINE EFFECT
+// ═══════════════════════════════════════
+document.querySelectorAll('.nom-card').forEach(card=>{
+    card.addEventListener('mousemove',e=>{
+        const rect=card.getBoundingClientRect();
+        const x=e.clientX-rect.left, y=e.clientY-rect.top;
+        card.style.setProperty('--mouse-x',x+'px');
+        card.style.setProperty('--mouse-y',y+'px');
+    });
+});
+
+// ═══════════════════════════════════════
+// SCROLL ANIMATIONS
+// ═══════════════════════════════════════
+const revealObs = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
+},{threshold:0.12});
+document.querySelectorAll('.reveal').forEach(el=>revealObs.observe(el));
+
+window.addEventListener('scroll',()=>{
+    document.getElementById('header').classList.toggle('scrolled',window.scrollY>80);
+});
+
+// ═══════════════════════════════════════
+// CLOUD STORAGE
+// ═══════════════════════════════════════
+class CloudStorage {
+    constructor(){ this.isOnline=true; this.isSyncing=false; }
+    async loadData(){
+        try {
+            const r=await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest`,{
+                headers:{'X-Master-Key':JSONBIN_API_KEY,'X-Bin-Meta':'false'}
+            });
+            if(!r.ok) throw new Error('Cloud load failed');
+            const cloud=await r.json();
+            const local=this.getCurrentLocalData();
+            const merged=this.mergeData(cloud,local);
+            this.saveMergedToLocalStorage(merged);
+            this.isOnline=true;
+            return merged;
+        } catch(err){
+            this.isOnline=false;
+            const backup=localStorage.getItem('flare_data_backup');
+            return backup ? JSON.parse(backup) : this.getDefaultData();
+        }
+    }
+    async saveData(data){
+        try {
+            this.isSyncing=true;
+            const r=await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`,{
+                method:'PUT',
+                headers:{'Content-Type':'application/json','X-Master-Key':JSONBIN_API_KEY},
+                body:JSON.stringify(data)
+            });
+            this.isSyncing=false;
+            if(r.ok){ this.isOnline=true; return true; }
+            return false;
+        } catch(err){ this.isSyncing=false; return false; }
+    }
+    mergeData(cloud,local){
+        if(!cloud||Object.keys(cloud).length===0) return local;
+        if(!local||Object.keys(local).length===0) return cloud;
+        return {
+            users:this.mergeArr(cloud.users,local.users,'mainNickname'),
+            votes:this.mergeArr(cloud.votes,local.votes,v=>`${v.mainNickname}_${v.category}_${v.nomination}`),
+            reports:this.mergeArr(cloud.reports,local.reports,'timestamp'),
+            polls:this.mergeArr(cloud.polls,local.polls,'timestamp'),
+            lastUpdated:new Date().toISOString()
+        };
+    }
+    mergeArr(cloudArr,localArr,keyFn){
+        const result=[...(cloudArr||[])];
+        const seen=new Set((cloudArr||[]).map(i=>typeof keyFn==='function'?keyFn(i):i[keyFn]));
+        (localArr||[]).forEach(i=>{
+            const k=typeof keyFn==='function'?keyFn(i):i[keyFn];
+            if(!seen.has(k)){ result.push(i); seen.add(k); }
+        });
+        return result;
+    }
+    saveMergedToLocalStorage(data){
+        if(data.users) localStorage.setItem('flare_users',JSON.stringify(data.users));
+        if(data.votes) localStorage.setItem('flare_votes',JSON.stringify(data.votes));
+        if(data.reports) localStorage.setItem('flare_reports',JSON.stringify(data.reports));
+        if(data.polls) localStorage.setItem('flare_polls',JSON.stringify(data.polls));
+    }
+    getCurrentLocalData(){
+        return {
+            users:JSON.parse(localStorage.getItem('flare_users')||'[]'),
+            votes:JSON.parse(localStorage.getItem('flare_votes')||'[]'),
+            reports:JSON.parse(localStorage.getItem('flare_reports')||'[]'),
+            polls:JSON.parse(localStorage.getItem('flare_polls')||'[]'),
+            lastUpdated:new Date().toISOString()
+        };
+    }
+    getDefaultData(){ return {users:[],votes:[],reports:[],polls:[],created:new Date().toISOString()}; }
+    startAutoSync(){
+        setInterval(async()=>{
+            if(this.isOnline&&!this.isSyncing) await this.saveData(this.getCurrentLocalData());
+        },30000);
+    }
+}
+
+// ═══════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════
+function getMainNick(nick){
+    const l=nick.toLowerCase();
+    for(const [main,vars] of Object.entries(ALLOWED_NICKNAMES)){
+        if(vars.map(v=>v.toLowerCase()).includes(l)) return main;
+    }
+    return null;
+}
+function getVotes(){ try{ return JSON.parse(localStorage.getItem('flare_votes')||'[]'); }catch{ return []; } }
+function currentUser(){ return localStorage.getItem('currentUser'); }
+
+function showMsg(elId,msg,type='success'){
+    const el=document.getElementById(elId);
+    if(!el) return;
+    el.innerHTML=`<div class="form-msg ${type}">${msg}</div>`;
+    setTimeout(()=>{ el.innerHTML=''; },4000);
+}
+
+// ═══════════════════════════════════════
+// CAROUSEL
+// ═══════════════════════════════════════
+let slide=0;
+function initCarousel(){
+    const track=document.getElementById('carouselTrack');
+    const dots=document.getElementById('carouselDots');
+    PREVIOUS_RESULTS.forEach((r,i)=>{
+        const s=document.createElement('div');
+        s.className='carousel-slide';
+        s.innerHTML=`
+            <div class="slide-cat">FLARE 2025 · ПОБЕДИТЕЛЬ</div>
+            <div class="slide-title">${r.nomination}</div>
+            <div class="slide-winner">${r.winner}</div>
+            <div class="slide-badge">★ Чемпион</div>
+        `;
+        track.appendChild(s);
+        const d=document.createElement('div');
+        d.className='dot'+(i===0?' active':'');
+        d.onclick=()=>goSlide(i);
+        dots.appendChild(d);
+    });
+    document.getElementById('prevBtn').onclick=()=>goSlide(slide-1);
+    document.getElementById('nextBtn').onclick=()=>goSlide(slide+1);
+    setInterval(()=>goSlide(slide+1),5000);
+}
+function goSlide(n){
+    const slides=document.querySelectorAll('.carousel-slide');
+    const dots=document.querySelectorAll('.dot');
+    if(n<0) n=slides.length-1;
+    else if(n>=slides.length) n=0;
+    document.getElementById('carouselTrack').style.transform=`translateX(-${n*100}%)`;
+    dots.forEach((d,i)=>d.classList.toggle('active',i===n));
+    slide=n;
+}
+
+// ═══════════════════════════════════════
+// TIMER
+// ═══════════════════════════════════════
+function updateTimer(){
+    const end=new Date('2026-11-29T18:00:00+03:00');
+    const now=new Date();
+    const diff=end-now;
+    if(diff<=0){
+        document.getElementById('timerGrid').innerHTML=`<div class="timer-ended">⚡ ГОЛОСОВАНИЕ ЗАВЕРШЕНО</div>`;
+        votingEnabled=false;
+        return;
+    }
+    const d=Math.floor(diff/86400000);
+    const h=Math.floor((diff%86400000)/3600000);
+    const m=Math.floor((diff%3600000)/60000);
+    const s=Math.floor((diff%60000)/1000);
+    const fmt=v=>String(v).padStart(2,'0');
+    document.getElementById('timerD').textContent=fmt(d);
+    document.getElementById('timerH').textContent=fmt(h);
+    document.getElementById('timerM').textContent=fmt(m);
+    document.getElementById('timerS').textContent=fmt(s);
+}
+
+// ═══════════════════════════════════════
+// AUTH
+// ═══════════════════════════════════════
+function checkAuth(){
+    const u=currentUser();
+    const authBtn=document.getElementById('authBtn');
+    if(u){
+        authBtn.textContent=u;
+        const main=getMainNick(u);
+        if(ADMIN_USERS.includes(main)){
+            document.getElementById('adminWrap').style.display='block';
+            document.getElementById('adminSection').style.display='block';
+        }
+    } else {
+        authBtn.textContent='Войти';
+    }
+}
+
+function setupAuth(){
+    const authBtn=document.getElementById('authBtn');
+    authBtn.addEventListener('click',()=>{
+        if(currentUser()){
+            if(confirm('Выйти из аккаунта?')){ localStorage.removeItem('currentUser'); location.reload(); }
+        } else {
+            openModal('authModal');
+        }
+    });
+
+    // Auth tabs
+    document.querySelectorAll('.auth-tab').forEach(tab=>{
+        tab.addEventListener('click',()=>{
+            document.querySelectorAll('.auth-tab').forEach(t=>t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+            tab.classList.add('active');
+            document.getElementById(tab.dataset.tab).classList.add('active');
+            document.getElementById('authSubmitBtn').textContent=tab.dataset.tab==='loginTab'?'Войти':'Зарегистрироваться';
+        });
+    });
+
+    document.getElementById('authSubmitBtn').addEventListener('click',async()=>{
+        const activeTab=document.querySelector('.auth-tab.active').dataset.tab;
+        if(activeTab==='loginTab') await doLogin();
+        else await doRegister();
+    });
+}
+
+async function doLogin(){
+    const username=document.getElementById('loginUser').value.trim();
+    const password=document.getElementById('loginPass').value;
+    if(!username||!password){ showMsg('loginMsg','Заполните все поля','error'); return; }
+    const users=JSON.parse(localStorage.getItem('flare_users')||'[]');
+    const main=getMainNick(username.toLowerCase());
+    const user=users.find(u=>u.mainNickname===main);
+    if(user&&user.password===password){
+        localStorage.setItem('currentUser',username);
+        closeModal('authModal');
+        checkAuth();
+        showMsg('loginMsg','','success');
+    } else {
+        showMsg('loginMsg','Неверный никнейм или пароль','error');
+    }
+}
+
+async function doRegister(){
+    const username=document.getElementById('regUser').value.trim();
+    const pass=document.getElementById('regPass').value;
+    const pass2=document.getElementById('regPass2').value;
+    if(!username||!pass||!pass2){ showMsg('registerMsg','Заполните все поля','error'); return; }
+    if(pass!==pass2){ showMsg('registerMsg','Пароли не совпадают','error'); return; }
+    const main=getMainNick(username.toLowerCase());
+    if(!main){ showMsg('registerMsg','Ваш никнейм не найден в списке участников','error'); return; }
+    await cloudStorage.loadData();
+    const users=JSON.parse(localStorage.getItem('flare_users')||'[]');
+    if(users.find(u=>u.mainNickname===main)){ showMsg('registerMsg','Аккаунт уже зарегистрирован','error'); return; }
+    const newUser={id:'user_'+Date.now(),username,mainNickname:main,password:pass,registeredAt:new Date().toISOString()};
+    users.push(newUser);
+    localStorage.setItem('flare_users',JSON.stringify(users));
+    localStorage.setItem('currentUser',username);
+    await cloudStorage.saveData(cloudStorage.getCurrentLocalData());
+    closeModal('authModal');
+    checkAuth();
+}
+
+// ═══════════════════════════════════════
+// MODALS
+// ═══════════════════════════════════════
+function openModal(id){ document.getElementById(id).classList.add('open'); }
+function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+
+function setupModals(){
+    document.querySelectorAll('.modal-close').forEach(btn=>{
+        btn.addEventListener('click',()=>closeModal(btn.dataset.close));
+    });
+    document.querySelectorAll('.modal').forEach(m=>{
+        m.addEventListener('click',e=>{ if(e.target===m) closeModal(m.id); });
+    });
+}
+
+// ═══════════════════════════════════════
+// VOTING
+// ═══════════════════════════════════════
+function openVoting(category){
+    const u=currentUser();
+    if(!u){ openModal('authModal'); return; }
+    if(!votingEnabled){ alert('Голосование завершено!'); return; }
+    currentCategory=category;
+    document.getElementById('nomModalTitle').textContent=category==='main'?'Основные номинации':'Дополнительные номинации';
+    loadNominations(category);
+    openModal('nomModal');
+}
+
+function loadNominations(category){
+    const grid=document.getElementById('nomGrid');
+    grid.innerHTML='';
+    const votes=getVotes();
+    const main=getMainNick(currentUser());
+    NOMINATIONS[category].forEach(nom=>{
+        const userVote=votes.find(v=>getMainNick(v.user)===main&&v.nomination===nom.id&&v.category===category);
+        const card=document.createElement('div');
+        card.className='nom-vote-card'+(userVote?' voted':'');
+        card.dataset.nominationId=nom.id;
+        const img=NOMINATION_IMAGES[nom.id]||'';
+        card.innerHTML=`
+            <img class="nom-vote-img" src="${img}" alt="${nom.name}">
+            <div class="nom-vote-info">
+                <div class="nom-vote-name">${nom.name}</div>
+                <div class="nom-vote-status">${userVote?'✓ '+userVote.nominee:'Нажмите для голосования'}</div>
+            </div>
+        `;
+        card.addEventListener('click',()=>openNomineeModal(nom));
+        grid.appendChild(card);
+    });
+}
+
+function openNomineeModal(nom){
+    currentNomination=nom;
+    document.getElementById('nomineeModalTitle').textContent=nom.name;
+    document.getElementById('nomDesc').textContent=nom.description;
+    document.getElementById('nomVoteSuccessMsg').innerHTML='';
+    loadNominees();
+    closeModal('nomModal');
+    openModal('nomineeModal');
+}
+
+function loadNominees(){
+    const grid=document.getElementById('nomineeGrid');
+    grid.innerHTML='';
+    document.getElementById('confirmVoteBtn').disabled=true;
+    selectedOtherValue='';
+    document.getElementById('otherField').style.display='none';
+
+    const votes=getVotes();
+    const main=getMainNick(currentUser());
+    const currentVote=votes.find(v=>getMainNick(v.user)===main&&v.nomination===currentNomination.id&&v.category===currentCategory);
+
+    if(currentNomination.hasLinks){
+        currentNomination.nominees.forEach(nom=>{
+            const el=document.createElement('div');
+            el.className='track-opt'+(currentVote&&currentVote.nominee===nom.name?' selected':'');
+            el.innerHTML=`
+                <span>${nom.name}</span>
+                <a href="${nom.link}" target="_blank" class="track-link" onclick="event.stopPropagation()">▶ Слушать</a>
+            `;
+            el.addEventListener('click',()=>{
+                document.querySelectorAll('.track-opt').forEach(e=>e.classList.remove('selected'));
+                el.classList.add('selected');
+                document.getElementById('confirmVoteBtn').disabled=false;
+            });
+            grid.appendChild(el);
+        });
+    } else {
+        grid.className='nominee-grid';
+        currentNomination.nominees.forEach(nominee=>{
+            const card=document.createElement('div');
+            card.className='nominee-card'+(currentVote&&currentVote.nominee===nominee?' selected':'');
+            const img=AVATAR_IMAGES[nominee]||'https://i.postimg.cc/NFJzTFs5/drugoe.png';
+            card.innerHTML=`
+                <img class="nominee-img" src="${img}" alt="${nominee}">
+                <div class="nominee-name">${nominee}</div>
+            `;
+            card.addEventListener('click',()=>{
+                document.querySelectorAll('.nominee-card').forEach(c=>c.classList.remove('selected'));
+                card.classList.add('selected');
+                document.getElementById('confirmVoteBtn').disabled=false;
+                if(currentNomination.hasOther&&nominee==='Другое'){
+                    document.getElementById('otherField').style.display='block';
+                    document.getElementById('confirmVoteBtn').disabled=true;
+                } else {
+                    document.getElementById('otherField').style.display='none';
+                    selectedOtherValue='';
+                }
+            });
+            grid.appendChild(card);
+        });
+        document.getElementById('otherInput').addEventListener('input',function(){
+            selectedOtherValue=this.value.trim();
+            document.getElementById('confirmVoteBtn').disabled=!selectedOtherValue;
+        });
+    }
+
+    if(currentVote) document.getElementById('confirmVoteBtn').disabled=false;
+}
+
+document.getElementById('backToNomBtn').addEventListener('click',()=>{
+    closeModal('nomineeModal');
+    openModal('nomModal');
+});
+
+document.getElementById('confirmVoteBtn').addEventListener('click',async()=>{
+    let nomineeName;
+    if(currentNomination.hasLinks){
+        const sel=document.querySelector('.track-opt.selected');
+        if(!sel) return;
+        nomineeName=sel.querySelector('span').textContent;
+    } else {
+        const sel=document.querySelector('.nominee-card.selected');
+        if(!sel) return;
+        nomineeName=sel.querySelector('.nominee-name').textContent;
+        if(currentNomination.hasOther&&nomineeName==='Другое'){
+            if(!selectedOtherValue){ alert('Введите значение'); return; }
+            nomineeName='Другое: '+selectedOtherValue;
+        }
+    }
+    const success=await saveVote(currentUser(),currentCategory,currentNomination.id,nomineeName);
+    if(success){
+        document.getElementById('nomVoteSuccessMsg').innerHTML=`<div class="form-msg success">✓ Ваш голос за «${nomineeName}» сохранён!</div>`;
+        loadNominations(currentCategory);
+        setTimeout(()=>{
+            closeModal('nomineeModal');
+            closeModal('nomModal');
+        },2000);
+    }
+});
+
+async function saveVote(user,category,nominationId,nominee){
+    try {
+        const votes=getVotes();
+        const main=getMainNick(user);
+        if(!main){ alert('Никнейм не распознан'); return false; }
+        const idx=votes.findIndex(v=>getMainNick(v.user)===main&&v.category===category&&v.nomination===nominationId);
+        const vote={user,mainNickname:main,category,nomination:nominationId,nominee,timestamp:new Date().toISOString()};
+        if(idx!==-1) votes[idx]=vote; else votes.push(vote);
+        localStorage.setItem('flare_votes',JSON.stringify(votes));
+        await cloudStorage.saveData(cloudStorage.getCurrentLocalData());
+        return true;
+    } catch(e){ alert('Ошибка сохранения'); return false; }
+}
+
+// ═══════════════════════════════════════
+// VOTE BUTTONS
+// ═══════════════════════════════════════
+document.getElementById('voteMainBtn').addEventListener('click',()=>{
+    document.getElementById('nominations').scrollIntoView({behavior:'smooth'});
+    setTimeout(()=>openVoting('main'),400);
+});
+document.getElementById('voteAddBtn').addEventListener('click',()=>{
+    document.getElementById('nominations').scrollIntoView({behavior:'smooth'});
+    setTimeout(()=>openVoting('additional'),400);
+});
+document.getElementById('mainNomCard').addEventListener('click',()=>openVoting('main'));
+document.getElementById('addNomCard').addEventListener('click',()=>openVoting('additional'));
+
+// ═══════════════════════════════════════
+// ADMIN
+// ═══════════════════════════════════════
+document.getElementById('adminBtn').addEventListener('click',e=>{
+    e.stopPropagation();
+    document.getElementById('adminDrop').classList.toggle('open');
+});
+document.addEventListener('click',()=>document.getElementById('adminDrop').classList.remove('open'));
+
+document.getElementById('aResultsBtn').addEventListener('click',()=>{
+    document.getElementById('adminResultsSection').style.display='block';
+    document.getElementById('adminStatsSection').style.display='none';
+    document.getElementById('adminReportsSection').style.display='none';
+    loadAdminResults();
+    document.getElementById('adminSection').scrollIntoView({behavior:'smooth'});
+});
+document.getElementById('aStatsBtn').addEventListener('click',()=>{
+    document.getElementById('adminStatsSection').style.display='block';
+    document.getElementById('adminResultsSection').style.display='none';
+    document.getElementById('adminReportsSection').style.display='none';
+    loadAdminStats();
+    document.getElementById('adminSection').scrollIntoView({behavior:'smooth'});
+});
+document.getElementById('aReportsBtn').addEventListener('click',()=>{
+    document.getElementById('adminReportsSection').style.display='block';
+    document.getElementById('adminResultsSection').style.display='none';
+    document.getElementById('adminStatsSection').style.display='none';
+    loadAdminReports();
+    document.getElementById('adminSection').scrollIntoView({behavior:'smooth'});
+});
+document.getElementById('exportBtn').addEventListener('click',()=>{
+    const data=cloudStorage.getCurrentLocalData();
+    const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url; a.download=`flare_data_${new Date().toISOString().split('T')[0]}.json`;
+    a.click(); URL.revokeObjectURL(url);
+});
+document.getElementById('forceSyncBtn').addEventListener('click',async()=>{
+    const ok=await cloudStorage.saveData(cloudStorage.getCurrentLocalData());
+    alert(ok?'Синхронизировано!':'Ошибка синхронизации');
+});
+
+function loadAdminResults(){
+    const votes=getVotes();
+    const grid=document.getElementById('adminResultsGrid');
+    grid.innerHTML='';
+    const results={};
+    votes.forEach(v=>{
+        const key=`${v.category}_${v.nomination}`;
+        if(!results[key]) results[key]={nomination:v.nomination,category:v.category,nominees:{}};
+        results[key].nominees[v.nominee]=(results[key].nominees[v.nominee]||0)+1;
+    });
+    Object.values(results).forEach(r=>{
+        const catName=r.category==='main'?'Основные':'Дополнительные';
+        const nomName=[...NOMINATIONS.main,...NOMINATIONS.additional].find(n=>n.id===r.nomination)?.name||r.nomination;
+        const card=document.createElement('div');
+        card.className='result-card';
+        const sorted=Object.entries(r.nominees).sort((a,b)=>b[1]-a[1]);
+        card.innerHTML=`<div class="rc-title">${catName} · ${nomName}</div>`+sorted.map(([nom,cnt],i)=>`<div class="rc-row${i===0?' winner':''}">${i===0?'🥇 ':''}<span>${nom}</span><span>${cnt} голосов</span></div>`).join('');
+        grid.appendChild(card);
+    });
+    if(!Object.keys(results).length) grid.innerHTML='<div style="color:var(--gray2)">Голосов пока нет</div>';
+}
+
+function loadAdminStats(){
+    const votes=getVotes();
+    const users=JSON.parse(localStorage.getItem('flare_users')||'[]');
+    const reports=JSON.parse(localStorage.getItem('flare_reports')||'[]');
+    const polls=JSON.parse(localStorage.getItem('flare_polls')||'[]');
+    const unique=[...new Set(votes.map(v=>getMainNick(v.user)))].length;
+    document.getElementById('adminStatsContent').innerHTML=`
+        <div class="stat-row"><span>Зарегистрировано пользователей</span><span>${users.length}</span></div>
+        <div class="stat-row"><span>Проголосовавших</span><span>${unique}</span></div>
+        <div class="stat-row"><span>Всего голосов</span><span>${votes.length}</span></div>
+        <div class="stat-row"><span>Основные номинации</span><span>${votes.filter(v=>v.category==='main').length}</span></div>
+        <div class="stat-row"><span>Дополнительные номинации</span><span>${votes.filter(v=>v.category==='additional').length}</span></div>
+        <div class="stat-row"><span>Репортов</span><span>${reports.length}</span></div>
+        <div class="stat-row"><span>Ответов в опросе</span><span>${polls.length}</span></div>
+    `;
+}
+
+function loadAdminReports(){
+    const reports=JSON.parse(localStorage.getItem('flare_reports')||'[]');
+    const el=document.getElementById('adminReportsContent');
+    if(!reports.length){ el.innerHTML='<div style="color:var(--gray2)">Репортов нет</div>'; return; }
+    el.innerHTML=reports.map(r=>`
+        <div class="result-card" style="margin-bottom:10px">
+            <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+                <span style="color:var(--gold);font-weight:600">${r.nickname}</span>
+                <span style="background:var(--gold-dim);border:1px solid rgba(232,200,122,0.2);color:var(--gold);font-size:0.72rem;padding:2px 8px;border-radius:100px">${r.reason}</span>
+            </div>
+            <div style="color:var(--gray2);font-size:0.85rem">${r.description}</div>
+            <div style="color:var(--gray);font-size:0.75rem;margin-top:6px">${new Date(r.timestamp).toLocaleString('ru-RU')}</div>
+        </div>
+    `).join('');
+    document.getElementById('reportsCount').textContent=reports.length;
+}
+
+// ═══════════════════════════════════════
+// REPORT
+// ═══════════════════════════════════════
+function setupReport(){
+    document.getElementById('reportLink').addEventListener('click',e=>{ e.preventDefault(); openModal('reportModal'); });
+    document.getElementById('footerReport').addEventListener('click',e=>{ e.preventDefault(); openModal('reportModal'); });
+    document.getElementById('submitReport').addEventListener('click',async()=>{
+        const nick=document.getElementById('reportNick').value.trim();
+        const reason=document.getElementById('reportReason').value;
+        const desc=document.getElementById('reportDesc').value.trim();
+        if(!nick||!reason||!desc){ showMsg('reportMsg','Заполните все поля','error'); return; }
+        const reports=JSON.parse(localStorage.getItem('flare_reports')||'[]');
+        reports.push({nickname:nick,reason,description:desc,timestamp:new Date().toISOString()});
+        localStorage.setItem('flare_reports',JSON.stringify(reports));
+        cloudStorage.saveData(cloudStorage.getCurrentLocalData());
+        showMsg('reportMsg','Спасибо! Ваш репорт отправлен.','success');
+        document.getElementById('reportNick').value='';
+        document.getElementById('reportReason').value='';
+        document.getElementById('reportDesc').value='';
+        setTimeout(()=>closeModal('reportModal'),2000);
+    });
+}
+
+// ═══════════════════════════════════════
+// POLL
+// ═══════════════════════════════════════
+function setupPoll(){
+    document.getElementById('pollFab').addEventListener('click',()=>openModal('pollModal'));
+    document.getElementById('submitPoll').addEventListener('click',async()=>{
+        const q1=document.getElementById('pollQ1').value.trim();
+        const q2=document.getElementById('pollQ2').value.trim();
+        const q3=document.getElementById('pollQ3').value.trim();
+        const q4=document.getElementById('pollQ4').value.trim();
+        if(!q1||!q2||!q3||!q4){ showMsg('pollMsg','Ответьте на все вопросы','error'); return; }
+        const polls=JSON.parse(localStorage.getItem('flare_polls')||'[]');
+        polls.push({user:currentUser()||'Аноним',q1,q2,q3,q4,timestamp:new Date().toISOString()});
+        localStorage.setItem('flare_polls',JSON.stringify(polls));
+        cloudStorage.saveData(cloudStorage.getCurrentLocalData());
+        showMsg('pollMsg','Спасибо за ваши ответы! 🎉','success');
+        ['pollQ1','pollQ2','pollQ3','pollQ4'].forEach(id=>document.getElementById(id).value='');
+        setTimeout(()=>closeModal('pollModal'),2000);
+    });
+}
+
+// ═══════════════════════════════════════
+// FAQ
+// ═══════════════════════════════════════
+function setupFaq(){
+    document.querySelectorAll('.faq-q').forEach(q=>{
+        q.addEventListener('click',()=>{
+            const item=q.parentElement;
+            item.classList.toggle('open');
+        });
+    });
+}
+
+// ═══════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════
+document.addEventListener('DOMContentLoaded',async()=>{
+    cloudStorage=new CloudStorage();
+    await cloudStorage.loadData();
+    cloudStorage.startAutoSync();
+
+    initCarousel();
+    updateTimer();
+    setInterval(updateTimer,1000);
+    checkAuth();
+    setupAuth();
+    setupModals();
+    setupReport();
+    setupPoll();
+    setupFaq();
+
+    // Preload images
+    [...Object.values(AVATAR_IMAGES),...Object.values(NOMINATION_IMAGES)].forEach(src=>{
+        const img=new Image(); img.src=src;
+    });
+
+    console.log('FLARE 2026 — Загружено ✨');
+});
+</script>
+</body>
+</html>
